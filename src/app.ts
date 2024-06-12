@@ -10,7 +10,7 @@ import "dotenv/config"
 
 
 
-class App{
+class App {
   public app : Application
   server : http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>
 
@@ -32,10 +32,9 @@ class App{
   }
   public startServer(port:number):void{
       this.server.listen(port,()=>{
-        console.log(`The API Gateway started at PORT${port}`);
+        console.log(`The API Gateway started at PORT at ${port}`);
       })
   }
-
 }
 
 

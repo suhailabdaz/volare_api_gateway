@@ -7,6 +7,4 @@ const userRoute:Application = express()
 const controller = new userController()
 
 
-
-
 export default userRoute
