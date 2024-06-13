@@ -5,9 +5,9 @@ import http from "http"
 import userRoute from "./modules/user/routes";
 import cors from "cors"
 import helmet from "helmet";
+import logger from "morgan"
 import cookieParser from "cookie-parser";
 import "dotenv/config"
-
 
 
 class App {
@@ -24,6 +24,7 @@ class App {
   private applyMiddleware():void{
     this.app.use(cors)
     this.app.use(helmet())
+    this.app.use(logger("dev"))
     this.app.use(cookieParser())
   }
 
@@ -36,6 +37,5 @@ class App {
       })
   }
 }
-
 
 export default App
