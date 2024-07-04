@@ -13,10 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/amqplib": "^0.10.5",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/http-proxy": "^1.17.14",
     "@types/morgan": "^1.9.9",
+    "amqplib": "^0.10.4",
     "concurrently": "^8.2.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
