@@ -8,10 +8,9 @@ import helmet from "helmet";
 import logger from "morgan"
 import cookieParser from "cookie-parser";
 import "dotenv/config"
-import RabbitMQClient from "./modules/user/rabbitmq/client";
+import userRabbitMQClient from "./modules/user/rabbitmq/client";
 
 
-const userRabbitMQ = new RabbitMQClient()
 
 class App {
   public app : Application
@@ -22,7 +21,7 @@ class App {
     this.server = http.createServer(this.app);
     this.applyMiddleware()
     this.routes()
-    userRabbitMQ.initialize()
+    userRabbitMQClient.initialize()
   }
   
   private applyMiddleware():void{

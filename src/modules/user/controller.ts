@@ -1,16 +1,17 @@
 import { Request, Response, NextFunction } from "express";
-import RabbitMQClient from "./rabbitmq/client";
+import userRabbitMQClient from "./rabbitmq/client";
 
 
-const userRabbitMQ = new RabbitMQClient()
 
 export default class userController{
   login = async (req: Request  , res: Response) => {
     try {
       console.log("hererere",req.body)
-      await userRabbitMQ.initialize()
-      await userRabbitMQ.produce(req.body)
-      return res.status(200).json({ success: false, message: 'wjeifjInvalid credentials' });
+      const response : any = await userRabbitMQClient.produce(req.body,"login")
+      if(response){
+        console.log("the response in controller ",response);
+      }
+      return res.status(200).json({ success: false, message: 'her we go' });
     } catch (error) {
       return res.status(500).json({succes: false , message:"hahahah"})
     }
