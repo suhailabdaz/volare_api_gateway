@@ -3,12 +3,15 @@ import { Application } from "express"
 import express from "express";
 import http from "http"
 import userRoute from "./modules/user/routes";
+import adminRoute from "./modules/admin/routes";
 import cors from "cors"
 import helmet from "helmet";
 import logger from "morgan"
 import cookieParser from "cookie-parser";
 import "dotenv/config"
 import userRabbitMQClient from "./modules/user/rabbitmq/client";
+import authRoute from "./modules/authentication/routes";
+import authorityRoute from "./modules/airline_authority/routes";
 
 
 
@@ -21,7 +24,6 @@ class App {
     this.server = http.createServer(this.app);
     this.applyMiddleware()
     this.routes()
-    userRabbitMQClient.initialize()
   }
   
   private applyMiddleware():void{
@@ -37,6 +39,9 @@ class App {
 
   private routes():void{
     this.app.use("/api/v1/user", userRoute);
+    this.app.use("/api/v1/admin",adminRoute);
+    this.app.use("/api/v1/auth",authRoute)
+    this.app.use("/api/v1/authority",authorityRoute)
   }
   public startServer(port:number):void{
       this.server.listen(port,()=>{

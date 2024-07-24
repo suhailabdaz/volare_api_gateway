@@ -46,7 +46,7 @@ class RabbitMQClient{
                 replyQueueName,
                 this.eventEmitter,
             );
-            
+
             this.consumer?.consumeMessages();
             this.isInitialized = true;
 
