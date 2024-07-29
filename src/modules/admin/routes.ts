@@ -1,13 +1,13 @@
-import express,{Application} from 'express'
-import adminController from './controller'
+import express, { Application } from 'express';
+import adminController from './controller';
+import { isValidated } from '../authentication/controller';
 
-const adminRoute : Application = express()
+const adminRoute: Application = express();
 
-const controller = new adminController()
+const controller = new adminController();
 
+adminRoute.post('/login', controller.login);
+adminRoute.get('/get-users', isValidated, controller.getUsers);
+adminRoute.post('/block-user', isValidated, controller.blockUser);
 
-adminRoute.post('/login', controller.login)
-adminRoute.post('/logout',controller.logout)
-
-
-export default adminRoute
+export default adminRoute;
