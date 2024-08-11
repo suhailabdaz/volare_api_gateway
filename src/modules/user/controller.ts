@@ -2,12 +2,45 @@ import { Request, Response, NextFunction } from "express";
 import userRabbitMQClient from "./rabbitmq/client";
 import { generateTokenOptions } from "../../utils/generateTokenOptions";
 import { StatusCode } from "../../interfaces/enum";
+import s3Config, { bucketName } from '../../config/s3.config';
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from '@aws-sdk/client-s3';
+import { randomImageName } from '../../utils/randomName';
+import sharp from 'sharp';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
+const s3 = new S3Client(s3Config);
+
 
 export default class userController {
+  imageUpload = async (req:Request , res:Response)=>{
+    try{
+      const buffer = await sharp(req.file?.buffer)
+      .resize({ height: 320, width: 320, fit: 'contain' })
+      .toBuffer();
+    const imageName = randomImageName();
+    const params = {
+      Bucket: bucketName,
+      Key: imageName,
+      Body: buffer,
+      ContentType: req.file?.mimetype,
+    };
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
+    const response = await userRabbitMQClient.produce(
+      { user_id: req.body.user_id, imageName }, 
+      'upload-image'
+    );    return res.status(StatusCode.Created).json(response)
+    }catch(err){
+        console.log(err);
+    }
+  }
   login = async (req: Request  , res: Response) => {
     try {
       const response : any = await userRabbitMQClient.produce(req.body,"login")
-      console.log(response,"login respoopoomse")
       if(response.success){
         const options = generateTokenOptions();
         res.cookie(
@@ -24,7 +57,7 @@ export default class userController {
       return res.status(500).json({succes: false , message:"hahahah"})
     }
   };
-
+  
   register = async (req: Request , res: Response) => {
     try {
       const response : any = await userRabbitMQClient.produce(req.body,"register")
@@ -219,6 +252,9 @@ update_password = async (req:Request ,res :Response)=>{
       throw new Error(err)
     }
   }
+
+
+  
 }
 
 

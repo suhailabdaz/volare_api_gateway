@@ -13,7 +13,7 @@ export default class Producer {
   async produceMessages(data: any, operation: string) {
     const uuid = randomUUID();
     this.channel.sendToQueue(
-      rabbitmqConfig.rabbitMQ.queues.authorityQueue,
+      rabbitmqConfig.rabbitMQ.queues.airlineQueue,
       Buffer.from(JSON.stringify(data)),
       {
         replyTo: this.replyQueueName,
@@ -24,12 +24,14 @@ export default class Producer {
         } ,
       }
     );
-
+ 
     return new Promise((res, rej) => {
       this.eventEmitter.once(uuid, async (data) => {
           try {
               const reply = JSON.parse(data.content.toString());
               console.log("promise reply", reply);
+              // No need to convert reply back to a Buffer and then to a string
+              // Just use reply as is
               res(reply);
           } catch (error) {
               rej(error);

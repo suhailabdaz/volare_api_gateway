@@ -12,6 +12,7 @@ import "dotenv/config"
 import userRabbitMQClient from "./modules/user/rabbitmq/client";
 import authRoute from "./modules/authentication/routes";
 import authorityRoute from "./modules/airline_authority/routes";
+import airlineRoute from "./modules/airline/routes";
 
 
 
@@ -42,6 +43,7 @@ class App {
     this.app.use("/api/v1/admin",adminRoute);
     this.app.use("/api/v1/auth",authRoute)
     this.app.use("/api/v1/authority",authorityRoute)
+    this.app.use('/api/v1/airline',airlineRoute)
   }
   public startServer(port:number):void{
       this.server.listen(port,()=>{

@@ -12,6 +12,7 @@ export interface AdminLogin {
 }
 
 export interface UserCredentials {
+  success: any;
   userId: string;
   role: string;
 }

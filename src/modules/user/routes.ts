@@ -1,6 +1,11 @@
 import express,{Application} from 'express'
 import userController from './controller'
 import { isValidated } from '../authentication/controller'
+import multer from 'multer';
+
+const storage = multer.memoryStorage();
+
+const upload = multer({ storage: storage });
 
 const userRoute : Application = express()
 
@@ -21,4 +26,6 @@ userRoute.post('/add-traveller',isValidated,controller.addTraveller)
 userRoute.get('/get-travellers',isValidated,controller.getTravellers)
 userRoute.post('/save-travellers',isValidated,controller.saveTravellers)
 userRoute.delete('/delete-traveller/:id',isValidated,controller.deleteTraveller)
+userRoute.post('/image-upload',isValidated,  upload.single('image'),controller.imageUpload)
+
 export default userRoute

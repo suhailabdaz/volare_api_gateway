@@ -6,12 +6,12 @@ import authRabbitMQClient from "./rabbitMQ/client";
 
 export const isValidated = (async(req: Request, res: Response, next: NextFunction) => {
     try {  
-      const token = req.cookies?.refreshToken || req.headers.authorization?.trim().split(" ")[1] || req.body.token;
+      const token = req.headers.authorization?.trim().split(" ")[1] || req.body.token;
     if (!token) {
       return res.status(StatusCode.Unauthorized).json({ message: "Token is missing" });
     }
     const result = await authRabbitMQClient.produce({ token }, "isAuthenticated") as UserCredentials
-        if (result) {
+        if (result.success) {
           next()
         } else {
           res.status(StatusCode.Unauthorized).json({ success: false, message: "unauthorizes" });

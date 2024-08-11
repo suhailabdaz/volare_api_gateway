@@ -51,7 +51,10 @@ export default class authorityController {
   }
   getAirports = async(req:Request,res:Response)=>{
     try{
-      const response = await authorityRabbitMQClient.produce(req.body,'get-airports')
+      
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 5
+      const response = await authorityRabbitMQClient.produce({page,limit},'get-airports')
       return res.status(StatusCode.Created).json(response)
     }catch(err:any){
       throw new Error(err)
@@ -72,6 +75,52 @@ export default class authorityController {
         to: req.query.toAirportId as string,
       };
       const response = await authorityRabbitMQClient.produce(data,'get-schedules')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }
+
+  saveSchedule = async (req:Request,res:Response)=>{
+    try{
+      console.log("cahrting,",req.body);
+      
+      const response:any = await authorityRabbitMQClient.produce(req.body,'save-schedule')
+      if(response.success){
+        return res.status(StatusCode.Created).json(response)
+      }else{
+        return res.status(StatusCode.InternalServerError).json(response)
+      }
+    }catch(err:any){
+      throw new Error(err)
+    }
+    }
+  
+  getFreeSchedules = async (req:Request,res:Response)=>{
+    try{
+      const response = await authorityRabbitMQClient.produce('','get-available')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }
+
+  airlineSchedules = async (req:Request,res:Response)=>{
+    try{
+      const { id } = req.query;
+      console.log("myschedules",id);
+      
+      const response = await authorityRabbitMQClient.produce(id,'airline-schedules')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }
+
+  searchSchedules = async (req:Request,res:Response)=>{
+    try{
+      const { from, to, weekday } = req.query as { from: string; to: string; weekday: string };
+      const response = await authorityRabbitMQClient.produce({from,to,weekday},'search-schedules')
       return res.status(StatusCode.Created).json(response)
     }catch(err:any){
       throw new Error(err)

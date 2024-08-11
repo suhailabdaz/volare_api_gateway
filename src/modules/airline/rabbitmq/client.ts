@@ -34,7 +34,7 @@ class RabbitMQClient{
             this.connection = await connect(rabbitmqConfig.rabbitMQ.url);
             this.producerChannel = await this.connection.createChannel();
             this.consumerChannel = await this.connection.createChannel();
-            const {queue: replyQueueName} = await this.consumerChannel.assertQueue("", {exclusive:true})
+            const {queue: replyQueueName} = await this.consumerChannel.assertQueue("", {exclusive: true})
             this.eventEmitter = new EventEmitter()
             this.producer = new Producer(
                 this.producerChannel,
@@ -46,7 +46,7 @@ class RabbitMQClient{
                 replyQueueName,
                 this.eventEmitter,
             );
-            
+
             this.consumer?.consumeMessages();
             this.isInitialized = true;
 
