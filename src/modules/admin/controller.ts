@@ -9,11 +9,10 @@ import s3Config, { bucketName } from '../../config/s3.config';
 import {
   S3Client,
   PutObjectCommand,
-  GetObjectCommand,
 } from '@aws-sdk/client-s3';
+
 import { randomImageName } from '../../utils/randomName';
 import sharp from 'sharp';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 const s3 = new S3Client(s3Config);
 
@@ -92,6 +91,7 @@ export default class adminController {
   blockAirline = async (req: Request, res: Response) => {
     try {
       let success = false;
+      
       const response_user: any = await airlineRabbitMQClient.produce(
         req.body.Id,
         'get-airline'
@@ -182,14 +182,14 @@ export default class adminController {
   createBanner = async (req:Request, res:Response)=>{
     try{
       const buffer = await sharp(req.file?.buffer)
-      .resize({ height: 320, width: 1280, fit: 'cover' })
+      .resize({ height: 180, width: 1940, fit: 'cover' })
       .toBuffer();
     const imageName = randomImageName();
     const params = {
       Bucket: bucketName,
       Key: imageName,
       Body: buffer,
-      ContentType: req.file?.mimetype,
+      ContentType: req.file?.mimetype, 
     };
     const command = new PutObjectCommand(params);
     await s3.send(command);

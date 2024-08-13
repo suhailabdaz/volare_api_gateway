@@ -80,7 +80,6 @@ export default class userController {
           try{
             const cookieOtp = req.cookies.otp            
             const enteredOtp = req.body.otp
-            console.log("cookieuser",req.cookies.user);
             
             if(cookieOtp == enteredOtp){
               const userData = JSON.parse(req.cookies.user);

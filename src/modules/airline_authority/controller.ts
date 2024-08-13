@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import authorityRabbitMQClient from "./rabbitmq/client";
+import airlineRabbitMQClient from "../airline/rabbitmq/client";
 import { generateTokenOptions } from "../../utils/generateTokenOptions";
 import { StatusCode } from "../../interfaces/enum";
 
@@ -42,8 +43,9 @@ export default class authorityController {
   }
   deleteAirport = async(req:Request,res:Response)=>{
     try{
-      const id = req.params.id
-      const response = await authorityRabbitMQClient.produce(id,'delete-airport')
+      const {id} = req.body
+      console.log(id);
+      const response = await authorityRabbitMQClient.produce(id,'suspend-airport')
       return res.status(StatusCode.Created).json(response)
     }catch(err:any){
       throw new Error(err)
@@ -83,11 +85,14 @@ export default class authorityController {
 
   saveSchedule = async (req:Request,res:Response)=>{
     try{
-      console.log("cahrting,",req.body);
-      
       const response:any = await authorityRabbitMQClient.produce(req.body,'save-schedule')
       if(response.success){
-        return res.status(StatusCode.Created).json(response)
+        const FlightData:any = await airlineRabbitMQClient.produce(response.schedule.flightId,'get-flight')
+        if(FlightData.success){
+          const flightInstance:any = await authorityRabbitMQClient.produce({schedule:response.schedule,flight:FlightData.flight_data},"schedule-charting")
+          return res.status(StatusCode.Created).json(flightInstance)
+        }
+        return res.status(StatusCode.InternalServerError).json(response)
       }else{
         return res.status(StatusCode.InternalServerError).json(response)
       }
@@ -121,6 +126,15 @@ export default class authorityController {
     try{
       const { from, to, weekday } = req.query as { from: string; to: string; weekday: string };
       const response = await authorityRabbitMQClient.produce({from,to,weekday},'search-schedules')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }
+
+  suspendSchedule = async(req:Request,res:Response)=>{
+    try{
+      const response = await authorityRabbitMQClient.produce(req.body.id,'suspend-schedule')
       return res.status(StatusCode.Created).json(response)
     }catch(err:any){
       throw new Error(err)
