@@ -110,6 +110,16 @@ export default class authorityController {
     }
   }
 
+  getChartedFlight = async (req:Request,res:Response)=>{
+    try{
+      const chartId = req.query.id;
+      const response = await authorityRabbitMQClient.produce(chartId,'get-chartedFlight')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }
+
   airlineSchedules = async (req:Request,res:Response)=>{
     try{
       const { id } = req.query;
@@ -124,8 +134,10 @@ export default class authorityController {
 
   searchSchedules = async (req:Request,res:Response)=>{
     try{
-      const { from, to, weekday } = req.query as { from: string; to: string; weekday: string };
-      const response = await authorityRabbitMQClient.produce({from,to,weekday},'search-schedules')
+      console.log("kittititi",req.query);
+      
+      const { from, to, date } = req.query as unknown as { from: string; to: string; date: Date };
+      const response = await authorityRabbitMQClient.produce({from,to,date},'search-schedules')
       return res.status(StatusCode.Created).json(response)
     }catch(err:any){
       throw new Error(err)

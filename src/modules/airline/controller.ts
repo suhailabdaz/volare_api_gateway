@@ -205,4 +205,12 @@ export default class airlineController {
       throw new Error(err)
     }
   }
-}
+
+  userFlight = async(req:Request,res:Response)=>{ 
+    try{
+      const response = await airlineRabbitMQClient.produce('','all-flights')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }}

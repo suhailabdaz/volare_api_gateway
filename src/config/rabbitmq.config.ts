@@ -9,6 +9,7 @@ export default {
       authQueue: 'auth_queue',
       authorityQueue: 'authority_queue',
       airlineQueue: 'airline_queue',
+      bookingQueue:'booking_queue'
     },
   },
 };

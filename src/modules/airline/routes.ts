@@ -18,13 +18,15 @@ airlineRoute.post(
   controller.verifyOtp
 );
 airlineRoute.post('/login', controller.login);
-airlineRoute.get('/get-image', isValidated, controller.getImage);
+airlineRoute.get('/get-image', controller.getImage);
 airlineRoute.post('/add-flight', isValidated, controller.addFlight);
 airlineRoute.get('/get-flights', isValidated, controller.getFlights);
 airlineRoute.post('/save-flight', isValidated, controller.saveFlight);
 airlineRoute.post('/suspend-flight', isValidated, controller.suspendFlight);
 airlineRoute.get('/get-airline', controller.getAirline);
 airlineRoute.get('/get-flight', controller.getFlight);
+airlineRoute.get('/all-flights', controller.userFlight);
+
 
 
 

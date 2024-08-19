@@ -17,8 +17,10 @@ authorityRoute.get('/get-schedules',isValidated,controller.getSchedules)
 authorityRoute.get('/available-schedules',isValidated,controller.getFreeSchedules)
 authorityRoute.post('/save-schedule',isValidated,controller.saveSchedule)
 authorityRoute.get('/airline-schedules',isValidated,controller.airlineSchedules)
-authorityRoute.get('/search-schedules',isValidated,controller.searchSchedules)
+authorityRoute.get('/search-schedules',controller.searchSchedules)
 authorityRoute.patch('/suspend-schedule',isValidated,controller.suspendSchedule)
+authorityRoute.get('/get-chartedFlight',controller.getChartedFlight)
+
 
 
 

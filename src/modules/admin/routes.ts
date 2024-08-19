@@ -11,14 +11,14 @@ const adminRoute: Application = express();
 const controller = new adminController();
 
 adminRoute.post('/login', controller.login);
-adminRoute.get('/get-users',isValidated, controller.getUsers);
+adminRoute.get('/get-users', controller.getUsers);
 adminRoute.post('/block-user', isValidated, controller.blockUser);
 adminRoute.post('/block-airline', isValidated, controller.blockAirline);
 adminRoute.post('/create-coupon', isValidated,  upload.single('coupon_logo_image'),
 controller.createCoupon);
-adminRoute.get('/get-coupons', isValidated, controller.getCoupons);
+adminRoute.get('/get-coupons', controller.getCoupons);
 adminRoute.post('/create-banner', isValidated, upload.single('banner_logo_image'),controller.createBanner);
-adminRoute.get('/get-banners', isValidated, controller.getBanners);
+adminRoute.get('/get-banners', controller.getBanners);
 adminRoute.patch('/block-ban',isValidated,controller.blockBanOrUpdate);
 
 
