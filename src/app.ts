@@ -9,7 +9,6 @@ import helmet from "helmet";
 import logger from "morgan"
 import cookieParser from "cookie-parser";
 import "dotenv/config"
-import userRabbitMQClient from "./modules/user/rabbitmq/client";
 import authRoute from "./modules/authentication/routes";
 import authorityRoute from "./modules/airline_authority/routes";
 import airlineRoute from "./modules/airline/routes";

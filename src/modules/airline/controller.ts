@@ -50,7 +50,7 @@ export default class airlineController {
       const otp = req.cookies.otp;
       if (enteredOtp === otp) {
         const buffer = await sharp(req.file?.buffer)
-          .resize({ height: 320, width: 320, fit: 'contain' })
+          .resize({ height: 320, width: 320, fit: 'cover' })
           .toBuffer();
         const imageName = randomImageName();
         const params = {
