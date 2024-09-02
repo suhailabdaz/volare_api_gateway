@@ -71,7 +71,7 @@ export default class bookingController {
         if (session.payment_status === 'paid') {
 
         await flightChartRabbitMQClient.produce({flightChartId, seats},'updateBookingSeatConfirmation')
-        const response = await bookingRabbitMQClient.produce(bookingId,'ticketConfirmation')
+        const response = await bookingRabbitMQClient.produce(bookingId,'ticket-confirmation')
         return res.status(StatusCode.Created).json(response);
 
         }
