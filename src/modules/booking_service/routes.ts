@@ -15,6 +15,8 @@ bookingRoute.post('/update-booking/:bookingId', isValidated, controller.updateBo
 bookingRoute.post('/update-seats/:bookingId', isValidated, controller.updateSeats);
 bookingRoute.post('/create-checkout-session',isValidated,controller.createCheckoutSession);
 bookingRoute.post('/update-booking-status',isValidated,controller.handleStripeWebhook)
+bookingRoute.post('/apply-coupon',isValidated,controller.applyCoupon)
+
 
 
 

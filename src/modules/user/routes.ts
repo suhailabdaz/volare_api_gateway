@@ -27,5 +27,7 @@ userRoute.get('/get-travellers',isValidated,controller.getTravellers)
 userRoute.post('/save-travellers',isValidated,controller.saveTravellers)
 userRoute.delete('/delete-traveller/:id',isValidated,controller.deleteTraveller)
 userRoute.post('/image-upload',isValidated,  upload.single('image'),controller.imageUpload)
+userRoute.get('/get-used-coupons',isValidated,controller.getUsedCoupons)
+
 
 export default userRoute

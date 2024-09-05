@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import bookingRabbitMQClient from './rabbitMQ/client';
 import flightChartRabbitMQClient from '../airline_authority/rabbitmq/client';
+import userRabbitMQClient from '../user/rabbitmq/client';
+
 import { StatusCode } from '../../interfaces/enum';
 import stripe from 'stripe';
 
@@ -35,12 +37,31 @@ export default class bookingController {
   updateBooking = async (req: Request, res: Response) => {
     try {
       const { bookingId } = req.params;
-      const travellers = req.body;
+      const {travellers,contactDetails} = req.body;
       const response = await bookingRabbitMQClient.produce(
-        { bookingId, travellers },
+        { bookingId, travellers,contactDetails },
         'update-booking'
       );
       return res.status(StatusCode.Created).json(response);
+    } catch (error) {
+      return res.status(500).json({ succes: false, message: 'task failed' });
+    }
+  };
+
+  applyCoupon = async (req: Request, res: Response) => {
+    try {
+      const {bookingId,userId,coupon} = req.body;
+      if(coupon == null){
+        return res.status(StatusCode.Created)
+      }else{
+      const response = await bookingRabbitMQClient.produce(
+        { bookingId,coupon },
+        'apply-coupon'
+      );
+      await userRabbitMQClient.produce({userId,coupon},'apply-coupon-user')
+
+      return res.status(StatusCode.Created).json(response);
+    }
     } catch (error) {
       return res.status(500).json({ succes: false, message: 'task failed' });
     }

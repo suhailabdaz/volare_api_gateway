@@ -194,6 +194,16 @@ update_password = async (req:Request ,res :Response)=>{
     }
   }
 
+  getUsedCoupons = async (req:Request , res:Response)=>{
+    try{
+      const userId = req.query.id
+      const response = await userRabbitMQClient.produce(userId,'get-used-coupons')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err){
+        console.log(err);
+    }
+  }
+
   updateUser = async (req:Request , res:Response)=>{
     try{
       const data = req.body
