@@ -26,6 +26,16 @@ airlineRoute.post('/suspend-flight', isValidated, controller.suspendFlight);
 airlineRoute.get('/get-airline', controller.getAirline);
 airlineRoute.get('/get-flight', controller.getFlight);
 airlineRoute.get('/all-flights', controller.userFlight);
+airlineRoute.get('/get-cancelations-policies',isValidated,controller.getCancelationPolicies);
+airlineRoute.get('/get-baggages-policies',isValidated,controller.getBaggagePolicies)
+airlineRoute.get('/get-meals',isValidated,controller.getMeals)
+airlineRoute.post('/add-cancelation-policies',isValidated,controller.addCancelation)
+airlineRoute.post('/add-baggage-policies',isValidated,controller.addBaggage)
+airlineRoute.post('/add-meals',isValidated,controller.addMeals)
+
+
+
+
 
 
 

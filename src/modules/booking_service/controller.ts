@@ -38,8 +38,10 @@ export default class bookingController {
     try {
       const { bookingId } = req.params;
       const {travellers,contactDetails} = req.body;
+      console.log('api gateway ',travellers,contactDetails);
+      
       const response = await bookingRabbitMQClient.produce(
-        { bookingId, travellers,contactDetails },
+        { bookingId, travellers, contactDetails },
         'update-booking'
       );
       return res.status(StatusCode.Created).json(response);

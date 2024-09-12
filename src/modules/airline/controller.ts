@@ -213,4 +213,61 @@ export default class airlineController {
     }catch(err:any){
       throw new Error(err)
     }
-  }}
+  }
+
+  
+  getCancelationPolicies= async(req:Request,res:Response)=>{ 
+    try{
+      const response = await airlineRabbitMQClient.produce(req.query.key,'all-cancelation-policies')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }
+
+  getBaggagePolicies= async(req:Request,res:Response)=>{ 
+    try{
+      const response = await airlineRabbitMQClient.produce(req.query.key,'all-baggage-policies')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }
+
+  getMeals= async(req:Request,res:Response)=>{ 
+    try{
+      const response = await airlineRabbitMQClient.produce(req.query.key,'all-meals')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }
+
+  addCancelation= async(req:Request,res:Response)=>{ 
+    try{
+      const response = await airlineRabbitMQClient.produce(req.body,'add-cancelation-policy')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }
+
+  addBaggage = async(req:Request,res:Response)=>{ 
+    try{
+      const response = await airlineRabbitMQClient.produce(req.body,'add-baggage-policy')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }
+
+  addMeals = async(req:Request,res:Response)=>{ 
+    try{
+      const response = await airlineRabbitMQClient.produce(req.body,'add-meals')
+      return res.status(StatusCode.Created).json(response)
+    }catch(err:any){
+      throw new Error(err)
+    }
+  }
+
+}
