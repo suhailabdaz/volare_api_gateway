@@ -1,13 +1,19 @@
-FROM node:14
+FROM node:18
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
 COPY package*.json ./
 
 RUN npm install
 
+RUN npm install -g ts-node nodemon
+
+COPY tsconfig.json .
+
+COPY src ./src
+
 COPY . .
 
 EXPOSE 4000
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
