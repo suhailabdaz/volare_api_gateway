@@ -30,7 +30,7 @@ class App {
   private applyMiddleware():void{
     this.app.use(express.json({ limit: "50mb" }));
     this.app.use(cors({
-      origin: 'http://localhost:3000',
+      origin: 'https://volareflights.site',
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,
