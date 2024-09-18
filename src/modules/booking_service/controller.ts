@@ -96,6 +96,23 @@ export default class bookingController {
     }
   };
 
+
+  getBookingByStatus = async (req: Request, res: Response) => {
+    try {
+
+      const { id, status } = req.query;
+
+      console.log(id, status, "skjdbhjbsd");      
+      const response = await bookingRabbitMQClient.produce(
+        {id,status},
+        'get-booking-by-status'
+      );
+      return res.status(StatusCode.Created).json(response);
+    } catch (error) {
+      return res.status(500).json({ succes: false, message: 'task failed' });
+    }
+  };
+
   handleStripeWebhook = async (req: Request, res: Response) => {
     try {
       const { flightChartId, bookingId, sessionId, seats } = req.body;
